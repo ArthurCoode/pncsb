@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNCSB - Materiais TEHC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-green: #0a2e1a;
+            --gold: #d4af37;
+            --light-gold: #f1e5ac;
+            --black: #121212;
+            --parchment: #f5e6c8;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--black);
+            color: var(--parchment);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        /* Navbar Aprimorada */
+        .header {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-img {
+            height: 50px;
+            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+            transition: var(--transition);
+        }
+        
+        .logo-img:hover {
+            transform: rotate(-5deg) scale(1.1);
+        }
+        
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+        
+        .back-button {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: var(--transition-slow);
+        }
+        
+        .back-button:hover {
+            color: var(--light-gold);
+            border-color: var(--gold);
+        }
+        
+        .back-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Conteúdo Principal */
+        .main-content {
+            max-width: 1100px;
+            margin: 6rem auto 3rem;
+            padding: 0 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .page-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+        
+        .page-subtitle {
+            color: var(--light-gold);
+            font-style: italic;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        /* Cards de Download Aprimorados */
+        .downloads-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        
+        .downloads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            perspective: 1000px;
+        }
+        
+        .download-card {
+            background: linear-gradient(135deg, rgba(10, 46, 26, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: var(--transition);
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .download-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--gold);
+        }
+        
+        .download-card:hover::before {
+            opacity: 1;
+        }
+        
+        .download-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--black) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23d4af37" stroke-width="0.5" stroke-dasharray="5,5"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .download-image i {
+            transition: var(--transition);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .download-card:hover .download-image i {
+            transform: scale(1.2);
+        }
+        
+        .download-info {
+            padding: 1.8rem;
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .download-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .download-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        
+        .download-card:hover .download-title::after {
+            width: 80px;
+        }
+        
+        .download-description {
+            color: var(--light-gold);
+            margin-bottom: 1.8rem;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        .download-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--light-gold);
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .download-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .download-meta i {
+            color: var(--gold);
+        }
+        
+        .download-button {
+            display: block;
+            text-align: center;
+            background: linear-gradient(to right, var(--gold) 0%, #e5c04a 100%);
+            color: var(--black);
+            padding: 0.9rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto;
+        }
+        
+        .download-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition-slow);
+        }
+        
+        .download-button:hover {
+            background: linear-gradient(to right, var(--light-gold) 0%, #f5d97e 100%);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .download-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Efeito de partículas */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+        
+        /* Rodapé Estilizado */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--light-gold);
+            font-size: 0.9rem;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            
+            .main-content {
+                margin-top: 5rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .downloads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Efeito de partículas -->
+    <div class="particles" id="particles-js"></div>
+
+    <!-- Navbar Aprimorada -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="images/brasao.png" alt="Brasão PNCSB" class="logo-img">
+            <span class="logo-text">PNCSB</span>
+        </div>
+        
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Voltar ao Priorado
+        </a>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Materiais TEHC</h1>
+            <p class="page-subtitle">"Trabalho de estudos históricos da Cavalaria"</p>
+        </div>
+
+        <div class="downloads-grid">
+            <!-- Arquivo 1 -->
+            <div class="download-card">
+                <div class="download-image">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">Timbrado TEHC - PNCSB</h3>
+                    <div class="download-meta">
+                        <span><i class="fas fa-file-alt"></i> Formato: DOCX</span>
+                        <span><i class="fas fa-file-archive"></i> Tamanho: 804kb</span>
+                    </div>
+                    <a href="downloads/manual-tehc-2023.pdf" class="download-button" download>
+                        <i class="fas fa-download"></i> Baixar Documento
+                    </a>
+                </div>
+            </div>
+
+            <!-- Arquivo 2 -->
+            <div class="download-card">
+                <div class="download-image">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">Dicas de Texto</h3>
+                    <div class="download-meta">
+                        <span><i class="fas fa-film"></i> Formato: DOCX</span>
+                        <span><i class="fas fa-file-archive"></i> Tamanho: 804kb</span>
+                    </div>
+                    <a href="downloads/video-tecnicas-equestres.mp4" class="download-button" download>
+                        <i class="fas fa-download"></i> Baixar Documento
+                    </a>
+                </div>
+            </div>
+
+            <!-- Arquivo 3 -->
+            <div class="download-card">
+                <div class="download-image">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="download-info">
+                    <h3 class="download-title">Instruções para TEHC</h3>
+                    <div class="download-meta">
+                        <span><i class="fas fa-film"></i> Formato: DOCX</span>
+                        <span><i class="fas fa-file-archive"></i> Tamanho: 804kb</span>
+                    </div>
+                    <a href="downloads/audio-historia-cavalaria.mp3" class="download-button" download>
+                        <i class="fas fa-download"></i> Baixar Áudio
+                    </a>
+                </div>
+            </div>
+        </div>
+<br>
+            <!-- Segunda linha de cards (exemplo de novos arquivos) -->
+            <div class="downloads-grid">
+                <!-- Arquivo 4 -->
+                <div class="download-card">
+                    <div class="download-image">
+                        <i class="fas fa-file-word"></i>
+                    </div>
+                    <div class="download-info">
+                        <h3 class="download-title">Modelos de TEHC</h3>
+                        <div class="download-meta">
+                            <span><i class="fas fa-file-alt"></i> Formato: DOCX</span>
+                            <span><i class="fas fa-file-archive"></i> Tamanho: 1.2MB</span>
+                        </div>
+                        <a href="downloads/regulamento-interno.docx" class="download-button" download>
+                            <i class="fas fa-download"></i> Baixar Documento
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Espaço vazio para manter alinhamento -->
+                <div class="download-card" style="visibility: hidden;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <p>&copy; 2023 Priorado Nobres Cavaleiros do Sertão Baiano | Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // Efeito de partículas
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles-js');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Posição aleatória
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Tamanho aleatório
+                const size = Math.random() * 3 + 1;
+                
+                // Animação aleatória
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite alternate`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Adiciona animação flutuante
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translateY(0) translateX(0); opacity: 0.1; }
+                    50% { transform: translateY(-20px) translateX(10px); opacity: 0.2; }
+                    100% { transform: translateY(0) translateX(0); opacity: 0.1; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
